@@ -1,2 +1,2 @@
 # Templated
-Node template example with express and pug
+Node template auth example with express and pug

@@ -47,7 +47,7 @@ router.post('/login', (req, res) => {
     const saltRounds = 10;
     sess = req.session;
     getUser(req.body.username, (data) => {
-        bcrypt.compare(req.body.passcode, data.passcode, function(err, result) {
+        bcrypt.compare(req.body.passcode, data.passcode, (err, result) => {
             if (err) {
                 console.log(err);
             }

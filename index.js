@@ -44,14 +44,14 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', (req, res) => {
     sess = req.session;
-    getName(req.body.username, (data) => {
+    validateUser(req.body.username, (data) => {
         console.log("Data:", data);
         sess.username = data;
         res.redirect('/admin');
     });
 });
 
-function getName(who, callback) {
+function validateUser(who, callback) {
         const sql = 'SELECT * FROM user WHERE username = ?';
         db.get(sql, [who], (err, row) => {
             if (err) {

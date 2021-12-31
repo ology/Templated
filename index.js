@@ -20,12 +20,11 @@ app.set('view engine', 'pug');
 
 // have a session!
 app.use(session({ secret: 'ssshhhhh', saveUninitialized: true, resave: true }));
+let sess; // global session for demo purposes
 
 // setup bodyParser...
 app.use(bodyParser.json());      
 app.use(bodyParser.urlencoded({ extended: true }));
-
-let sess; // global session for demo purposes
 
 const db = new sqlite.Database('auth.db', (err) => {
     if (err) {

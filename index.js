@@ -44,7 +44,6 @@ router.get('/login', (req, res) => {
     res.redirect('/');
 });
 router.post('/login', (req, res) => {
-    const saltRounds = 10;
     sess = req.session;
     getUser(req.body.username, (data) => {
         bcrypt.compare(req.body.passcode, data.passcode, (err, result) => {

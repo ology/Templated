@@ -14,9 +14,11 @@ const db = new sqlite.Database('auth.db', (err) => {
 
 bcrypt.hash(passcode, saltRounds, function(err, hash) {
     const sql = 'UPDATE user SET passcode = ? WHERE username = ?';
-    db.get(sql, [hash, who], (err, row) => {
+    db.run(sql, [hash, who], (err, row) => {
         if (err) {
             console.log(err);
         }
     });
 });
+
+db.close();

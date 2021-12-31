@@ -61,15 +61,15 @@ router.post('/login', (req, res) => {
 });
 
 function getUser(who, callback) {
-        const sql = 'SELECT * FROM user WHERE username = ?';
-        db.get(sql, [who], (err, row) => {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                callback(row);
-            }
-        });
+    const sql = 'SELECT * FROM user WHERE username = ?';
+    db.get(sql, [who], (err, row) => {
+        if (err) {
+            console.log(err);
+        }
+        else {
+            callback(row);
+        }
+    });
 }
 
 router.get('/admin', (req, res) => {

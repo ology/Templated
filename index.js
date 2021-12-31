@@ -26,6 +26,7 @@ let sess; // global session for demo purposes
 app.use(bodyParser.json());      
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// global db - oof!
 const db = new sqlite.Database('auth.db', (err) => {
     if (err) {
         return console.error(err.message);

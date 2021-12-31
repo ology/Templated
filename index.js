@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const sqlite = require('sqlite3').verbose();
+const bcrypt = require('bcrypt');
 
 const app = express();
 const router = express.Router();
@@ -43,22 +44,30 @@ router.get('/login', (req, res) => {
     res.redirect('/');
 });
 router.post('/login', (req, res) => {
+    const saltRounds = 10;
     sess = req.session;
-    validateUser(req.body.username, (data) => {
-        console.log("Data:", data);
-        sess.username = data;
+    getUser(req.body.username, (data) => {
+        console.log('Data:', data);
+        bcrypt.compare(req.body.passcode, data.passcode, function(err, result) {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                sess.username = data.username;
+            }
+        });
         res.redirect('/admin');
     });
 });
 
-function validateUser(who, callback) {
+function getUser(who, callback) {
         const sql = 'SELECT * FROM user WHERE username = ?';
         db.get(sql, [who], (err, row) => {
             if (err) {
                 console.log(err);
             }
             else {
-                callback(row.username);
+                callback(row);
             }
         });
 }

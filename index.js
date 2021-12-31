@@ -47,16 +47,20 @@ router.post('/login', (req, res) => {
     const saltRounds = 10;
     sess = req.session;
     getUser(req.body.username, (data) => {
-        console.log('Data:', data);
         bcrypt.compare(req.body.passcode, data.passcode, function(err, result) {
             if (err) {
                 console.log(err);
             }
             else {
-                sess.username = data.username;
+                if (result == true) {
+                    sess.username = data.username;
+                }
+                else {
+                    console.log(`Incorrect passcode for ${data.username}`);
+                }
             }
+            res.redirect('/admin');
         });
-        res.redirect('/admin');
     });
 });
 

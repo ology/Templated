@@ -2,6 +2,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const sqlite = require('sqlite3').verbose();
 
 const app = express();
 const router = express.Router();
@@ -23,9 +24,16 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 let sess; // global session for demo purposes
 
+const db = new sqlite.Database('auth.db', (err) => {
+    if (err) {
+        return console.error(err.message);
+    }
+    console.log('Connected to sqlite');
+});
+
 router.get('/', (req, res) => {
     sess = req.session;
-    if (sess.email) {
+    if (sess.username) {
         return res.redirect('/admin');
     }
     res.render('index', { title: 'Login'});
@@ -36,14 +44,29 @@ router.get('/login', (req, res) => {
 });
 router.post('/login', (req, res) => {
     sess = req.session;
-    sess.email = req.body.email;
-    res.redirect('/admin');
+    getName(req.body.username, (data) => {
+        console.log("Data:", data);
+        sess.username = data;
+        res.redirect('/admin');
+    });
 });
+
+function getName(who, callback) {
+        const sql = 'SELECT * FROM user WHERE username = ?';
+        db.get(sql, [who], (err, row) => {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                callback(row.username);
+            }
+        });
+}
 
 router.get('/admin', (req, res) => {
     sess = req.session;
-    if (sess.email) {
-        res.write(`<b>Hello ${sess.email}</b> | <a href="/logout">Logout</a>`);
+    if (sess.username) {
+        res.write(`<b>Hello ${sess.username}</b> | <a href="/logout">Logout</a>`);
         res.end();
     }
     else {

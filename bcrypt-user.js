@@ -17,15 +17,10 @@ const db = new sqlite.Database('auth.db', (err) => {
 
 bcrypt.hash(passcode, saltRounds, function(err, hash) {
     const sql = 'UPDATE user SET passcode = ? WHERE username = ?';
-    db.run(sql, [hash, who], (err, row) => {
+    db.run(sql, [hash, who], (err) => {
         if (err) {
-            console.log(err);
+            console.log(err.message);
         }
-        else {
-            console.log('Done.');
-        }
+        console.log('Done.');
     });
 });
-
-//db.close();
-//console.log('Disonnected from sqlite');

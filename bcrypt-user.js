@@ -1,8 +1,11 @@
 const sqlite = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
 
-const who = 'fred'; //'gene';
-const passcode = 'flintstone'; //'abc123';
+const myArgs = process.argv.slice(2);
+const who = myArgs[0];
+const passcode = myArgs[1];
+console.log('Updating passcode for:', who);
+
 const saltRounds = 10;
 
 const db = new sqlite.Database('auth.db', (err) => {
@@ -18,7 +21,11 @@ bcrypt.hash(passcode, saltRounds, function(err, hash) {
         if (err) {
             console.log(err);
         }
+        else {
+            console.log('Done.');
+        }
     });
 });
 
 db.close();
+console.log('Disonnected from sqlite');

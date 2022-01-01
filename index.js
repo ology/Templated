@@ -66,18 +66,6 @@ router.post('/login', async (req, res, next) => {
     });
 });
 
-async function getUser(who) {
-    try {
-        const sql = 'SELECT * FROM user WHERE username = ?';
-        const row = await db.get(sql, [who]);
-        return row;
-    }
-    catch (error) {
-        console.error(error);
-        throw error;
-    }
-}
-
 router.get('/admin', (req, res) => {
     sess = req.session;
     if (sess.username) {
@@ -103,3 +91,15 @@ app.use('/', router);
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}/`);
 });
+
+async function getUser(who) {
+    try {
+        const sql = 'SELECT * FROM user WHERE username = ?';
+        const row = await db.get(sql, [who]);
+        return row;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
+}

@@ -3,6 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const sqlite = require('sqlite3').verbose();
+const { open } = require('sqlite');
 const bcrypt = require('bcrypt');
 
 const app = express();
@@ -27,12 +28,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // global db - oof!
-const db = new sqlite.Database('auth.db', (err) => {
-    if (err) {
-        return console.error(err.message);
-    }
-    console.log('Connected to sqlite');
-});
+let db;
+(async () => {
+    db = await open({
+      filename: 'auth.db',
+      driver: sqlite.Database
+    })
+})()
 
 router.get('/', (req, res) => {
     sess = req.session;
@@ -45,9 +47,10 @@ router.get('/', (req, res) => {
 router.get('/login', (req, res) => {
     res.redirect('/');
 });
-router.post('/login', (req, res) => {
-    sess = req.session;
-    getUser(req.body.username, (data) => {
+router.post('/login', async (req, res, next) => {
+    try {
+        sess = req.session;
+        data = await getUser(req.body.username);
         bcrypt.compare(req.body.passcode, data.passcode, (err, result) => {
             if (err) {
                 console.log(err);
@@ -62,19 +65,22 @@ router.post('/login', (req, res) => {
             }
             res.redirect('/admin');
         });
-    });
+    }
+    catch (e) {
+        next(e) 
+    }
 });
 
-function getUser(who, callback) {
-    const sql = 'SELECT * FROM user WHERE username = ?';
-    db.get(sql, [who], (err, row) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            callback(row);
-        }
-    });
+async function getUser(who) {
+    try {
+        const sql = 'SELECT * FROM user WHERE username = ?';
+        const row = await db.get(sql, [who]);
+        return row;
+    }
+    catch (error) {
+        console.error(error);
+        throw error;
+    }
 }
 
 router.get('/admin', (req, res) => {

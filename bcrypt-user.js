@@ -21,19 +21,17 @@ bcrypt.hash(passcode, saltRounds, (err, hash) => {
         if (err) {
             console.log(err.message);
         }
+        if (row) {
+            sql = 'UPDATE user SET passcode = ? WHERE username = ?';
+            db.run(sql, [hash, who], (err) => {
+                if (err) {
+                    console.log(err.message);
+                }
+                console.log('Done.');
+            });
+        }
         else {
-            if (row) {
-                sql = 'UPDATE user SET passcode = ? WHERE username = ?';
-                db.run(sql, [hash, who], (err) => {
-                    if (err) {
-                        console.log(err.message);
-                    }
-                    console.log('Done.');
-                });
-            }
-            else {
-                console.log(`No such user ${who}`)
-            }
+            console.log(`No such user ${who}`)
         }
     });
 });

@@ -1,10 +1,15 @@
 const sqlite = require('sqlite3').verbose();
 const bcrypt = require('bcrypt');
+const read = require('read')
 
 const myArgs = process.argv.slice(2);
 const who = myArgs[0];
+
+read({ prompt: 'Password: ', silent: true }, (er, password) => {
+    passcode = password;
+});
 const passcode = myArgs[1];
-console.log('Updating passcode for:', who);
+console.log('Updating passcode for:', who, '...');
 
 const saltRounds = 10;
 

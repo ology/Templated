@@ -59,7 +59,7 @@ router.post('/login', async (req, res, next) => {
                 sess.username = data.username;
             }
             else {
-                console.log(`Incorrect passcode for ${data.username}`);
+                console.log(`Incorrect passcode for ${req.body.username}`);
             }
         }
         res.redirect('/admin');

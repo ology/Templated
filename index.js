@@ -41,7 +41,7 @@ router.get('/', (req, res) => {
     if (sess.username) {
         return res.redirect('/admin');
     }
-    res.render('index', { title: 'Login'});
+    res.render('index', { title: 'Login' });
 });
 
 router.get('/login', (req, res) => {

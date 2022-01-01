@@ -15,7 +15,7 @@ const db = new sqlite.Database('auth.db', (err) => {
     console.log('Connected to sqlite');
 });
 
-bcrypt.hash(passcode, saltRounds, function(err, hash) {
+bcrypt.hash(passcode, saltRounds, (err, hash) => {
     let sql = 'SELECT * FROM user WHERE username = ?';
     db.get(sql, [who], (err, row) => {
         if (err) {

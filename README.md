@@ -1,2 +1,2 @@
 # Templated-Auth
-Node template auth example with express and pug
+Node auth example with express, bcrypt, and pug

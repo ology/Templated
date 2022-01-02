@@ -27,7 +27,7 @@ let sess; // global session for demo purposes
 app.use(bodyParser.json());      
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// global db - oof!
+// global db!
 let db;
 (async () => {
     db = await open({

@@ -81,6 +81,8 @@ router.get('/logout', (req, res) => {
     });
 });
 
+// App start
+
 app.use('/', router);
 
 app.listen(port, () => {

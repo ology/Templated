@@ -36,6 +36,8 @@ let db;
     })
 })()
 
+// Routes
+
 router.get('/', (req, res) => {
     sess = req.session;
     if (sess.username) {
@@ -84,6 +86,8 @@ app.use('/', router);
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}/`);
 });
+
+// Functions
 
 async function getUser(who) {
     try {

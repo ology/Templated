@@ -50,8 +50,7 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res, next) => {
     sess = req.session;
     data = await getUser(req.body.username);
-    const isPasscode = await bcrypt.compare(req.body.passcode, data.passcode);
-    if (isPasscode) {
+    if (await bcrypt.compare(req.body.passcode, data.passcode)) {
         sess.username = data.username;
     }
     else {

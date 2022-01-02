@@ -50,20 +50,14 @@ router.get('/login', (req, res) => {
 router.post('/login', async (req, res, next) => {
     sess = req.session;
     data = await getUser(req.body.username);
-    bcrypt.compare(req.body.passcode, data.passcode, (err, result) => {
-        if (err) {
-            console.log(err);
-        }
-        else {
-            if (result == true) {
-                sess.username = data.username;
-            }
-            else {
-                console.log(`Incorrect passcode for ${req.body.username}`);
-            }
-        }
-        res.redirect('/admin');
-    });
+    const isPasscode = await bcrypt.compare(req.body.passcode, data.passcode);
+    if (isPasscode) {
+        sess.username = data.username;
+    }
+    else {
+        console.log(`Incorrect passcode for ${req.body.username}`);
+    }
+    res.redirect('/admin');
 });
 
 router.get('/admin', (req, res) => {

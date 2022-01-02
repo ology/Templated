@@ -15,7 +15,7 @@ const port = process.env.PORT || '3333';
 // use a static directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// set the pug views directory
+// set the template views directory
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 

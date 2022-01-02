@@ -81,9 +81,9 @@ router.get('/logout', (req, res) => {
     });
 });
 
-// App start
-
 app.use('/', router);
+
+// App start
 
 app.listen(port, () => {
     console.log(`Listening on http://localhost:${port}/`);
